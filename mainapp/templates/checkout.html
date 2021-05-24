@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h3 class="text-center mt-5 mb-5">Buyurtmani ro'yxatdan o'tkazish</h3>
+
+
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Nomi</th>
+        <th scope="col">Rasmi</th>
+        <th scope="col">Narxi</th>
+        <th scope="col">Soni</th>
+        <th scope="col">Umumiy narx</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for item in cart.products.all %}
+            <tr>
+                <th scope="row">{{ item.content_object.title }}</th>
+                <td class="w-25"><img src ="{{ item.content_object.image.url }}" class="img-fluid"></td>
+                <td>{{ item.content_object.price }}</td>
+                <td>{{ item.qty }}</td>
+                <td>{{ item.final_price }} so'm</td>
+                
+            </tr>
+        {% endfor %} 
+            <tr>
+                <td colspan="2"></td>
+                <td>Jami:</td>
+                <td>{{ cart.total_products }}</td>
+                <td><strong> {{ cart.final_price }} so'm </strong></td>
+            </tr>
+    </tbody>
+  </table>
+<hr>
+<h3 class="text-center mt-5 mb-5">Buyurtma formasi</h3>
+<form action="{% url 'make_order' %}" method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" class="btn btn-success btn-block mb-3" value="Buyurtma qilish">
+</form>
+{% endblock content %}
